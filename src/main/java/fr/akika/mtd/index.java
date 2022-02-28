@@ -1,5 +1,6 @@
 package fr.akika.mtd;
 
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.yaml.snakeyaml.Yaml;
@@ -14,21 +15,23 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Map;
 
+import static fr.akika.mtd.discord.main.enable;
+
 public final class index extends JavaPlugin {
 
-    public String prefix = "§b[§1MTD§b] §f: ";
+    public static String prefix = "§b[§1MTD§b] §f: ";
     Yaml yaml = new Yaml();
     public main main;
 
     @Override
     public void onEnable() {
 
-        System.out.println(prefix + "§aLe plugin est activé !");
+        Bukkit.getConsoleSender().sendMessage(prefix + "§aPlugin is enable !");
 
         if(Files.isDirectory(Paths.get("./plugins/MTD/"))){
             File file = new File("./plugins/MTD/discord.yaml");
             if(file.exists()){
-                System.out.println(prefix + "§aLe fichier de discord à été chargé");
+                Bukkit.getConsoleSender().sendMessage(prefix + "§6Discord file has been loaded");
                 try {
                     Reader read = new FileReader("./plugins/MTD/discord.yaml");
                     Map<String, Object> obj = yaml.load(read);
@@ -40,7 +43,7 @@ public final class index extends JavaPlugin {
                 }
 
             } else {
-                System.out.println(prefix + "§6Création du fichier en cours...");
+                Bukkit.getConsoleSender().sendMessage(prefix + "§6Creation of fill in progress...");
                 try {
                     file.createNewFile();
                 } catch (IOException e) {
@@ -49,7 +52,7 @@ public final class index extends JavaPlugin {
             }
         } else {
             File folder = new File("./plugins//MTD//discord.yaml");
-            String text = "#Tell if you want active discord\ndiscord: false\n#Here, provide the token of you bot then go to discord portal developper\ntoken: false\n#Here, provide channel id where you want your minecraft chat\nchannelid: null";
+            String text = "#Tell if you want active discord\ndiscord: false\n#Here, provide the token of you bot then go to discord portal developper\ntoken: false\n#Here, provide channel id where you want your minecraft chat\nchannelid: null\nstatus: null";
             try {
                 Files.createDirectories(Paths.get("./plugins//MTD"));
                 folder.createNewFile();
@@ -72,7 +75,10 @@ public final class index extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        System.out.println(prefix + "§cLe plugin est désactivé !");
+        if(enable){
+            main.shutdown();
+        }
+        Bukkit.getConsoleSender().sendMessage(prefix + "§cPlugin is disable !");
 
         // Plugin shutdown logic
     }

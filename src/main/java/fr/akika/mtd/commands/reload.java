@@ -13,6 +13,9 @@ import java.io.FileReader;
 import java.io.Reader;
 import java.util.Map;
 
+import static fr.akika.mtd.discord.main.enable;
+import static fr.akika.mtd.index.prefix;
+
 public class reload implements CommandExecutor {
 
     public main main;
@@ -20,16 +23,22 @@ public class reload implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        try {
-            Reader read = new FileReader("./plugins/MTD/discord.yaml");
-            Map<String, Object> obj = yaml.load(read);
-            if(obj.get("discord") == "true"){
-                main = new main();
+        if(!enable){
+            Bukkit.getConsoleSender().sendMessage(prefix + "§6You need to start the bot before");
+        } else {
+            main.shutdown();
+            try {
+                Reader read = new FileReader("./plugins/MTD/discord.yaml");
+                Map<String, Object> obj = yaml.load(read);
+                if(obj.get("discord") == "true"){
+                    main = new main();
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            Bukkit.broadcastMessage("The discord yaml file has been recharged");
+            main = new main();
         }
-        Bukkit.broadcastMessage("The discord yaml file has been recharged");
         return false;
     }
 }
