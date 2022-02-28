@@ -1,0 +1,18 @@
+name: MTD
+version: '${project.version}'
+main: fr.akika.mtd.index
+api-version: 1.18
+authors: [ Akik4 ]
+description: This plugin can transfert minecraft information to discord and invert
+commands:
+  dreload:
+    aliases: [drl]
+    usage: /dreload
+    description: This command reload the discord part of the plugin
+    permission: mtd.dreload
+  dstop:
+    description: This command stop the discord part of the plugin
+    permission: mtd.dstop
+  dstart:
+    description: This command start your discord bot
+    permission: mtd.dstart
